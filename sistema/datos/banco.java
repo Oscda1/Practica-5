@@ -1,18 +1,22 @@
 package sistema.datos;
 
 public class banco{
-    int NU=0;
+    int NU=-1;
     String pApellido="";
     String sApellido="";
     String nombres="";
     int cantidad=0;
     int clave=0;
     cuenta[] Usuarios = new cuenta[100];
+    public cuenta llenar(){
+        cuenta example = new cuenta("",0);
+        return example;
+    }
     public void Registrar(){
         NU++;
-        pApellido=null;
-        sApellido=null;
-        nombres=null;
+        Usuarios[NU]=llenar();
+        sApellido="";
+        nombres="";
         boolean salir=false;
         boolean salir2=false;
         String temporal="";
@@ -24,11 +28,12 @@ public class banco{
         sApellido=System.console().readLine();
         System.out.println("Ingrese su(s) nombre(s)");
         nombres=System.console().readLine();
-        if(sApellido!=null){
+        if(sApellido!=""){
             nombres=pApellido+" "+sApellido+" "+nombres;
         }else{
             nombres=pApellido+" "+nombres;
         }
+        nombres=nombres.toUpperCase();
         do{
             System.out.println("Ingrese su PIN");
             do{
@@ -70,70 +75,74 @@ public class banco{
         int usuario=0;
         int dinero=0;
         boolean salir=false;
-        System.out.println("Ingrese su numero de usuario");
+        System.out.println("Ingrese su numero de usuario\n");
         do{
             try {
                 usuario=Integer.parseInt(System.console().readLine());
                 salir=true;
             } catch (Exception e) {
-                System.out.print("Ingrese un numero");
+                System.out.println("Ingrese un numero\n");
                 salir=false;
             }
         }while(salir==false);
         salir=false;
-        System.out.println("Ingrese su PIN");
+        System.out.println("Ingrese su PIN\n");
         do{
             try {
                 uClave=Integer.parseInt(System.console().readLine());
                 salir=true;
             } catch (Exception e) {
-                System.out.print("Ingrese un numero");
+                System.out.println("Ingrese un numero\n");
                 salir=false;
             }
         }while(salir==false);
         salir=false;
-        if(Usuarios[usuario].validacion(uClave)==true){
-            do{
-                System.out.println("Bienvenido "+Usuarios[usuario].getNombre()+" que desea hacer?");
-                System.out.println("1)Depositar dinero\n2)Retirar dinero\n3)Consultar saldo\n4)Salir");
-                try {
-                    switch(Integer.parseInt(System.console().readLine())){
-                        case 1:
-                            System.out.println("Cuanto dinero desea depositar?");
-                            try {
-                                dinero=Integer.parseInt(System.console().readLine());
-                                Usuarios[usuario].setDepositoSaldo(dinero);
-                                System.out.print("saldo agregado exitosamente");
-                            } catch (Exception e) {
-                                System.out.print("Favor de especificar un numero");
-                            }
-                            break;
-                        case 2:
-                            System.out.println("Cuanto dinero desea retirar?");
-                            try {
-                                dinero=Integer.parseInt(System.console().readLine());
-                                Usuarios[usuario].setRetiroSaldo(dinero);
-                            } catch (Exception e) {
-                                System.out.print("Favor de especificar un numero");
-                            }
-                            break;
-                        case 3:
-                            System.out.println("Su saldo actual es de "+Usuarios[usuario].getSaldo());
-                            break;
-                        case 4:
-                            salir=true;
-                            break;
-                        default:
-                            System.out.println("Favor de ingresar una opcion correcta");
-                            break;
+        try {
+            if(Usuarios[usuario].validacion(uClave)==true){
+                do{
+                    System.out.println("Bienvenido "+Usuarios[usuario].getNombre()+" que desea hacer?\n");
+                    System.out.println("1)Depositar dinero\n2)Retirar dinero\n3)Consultar saldo\n4)Salir\n");
+                    try {
+                        switch(Integer.parseInt(System.console().readLine())){
+                            case 1:
+                                System.out.println("Cuanto dinero desea depositar?\n");
+                                try {
+                                    dinero=Integer.parseInt(System.console().readLine());
+                                    Usuarios[usuario].setDepositoSaldo(dinero);
+                                    System.out.println("Saldo agregado exitosamente\n");
+                                } catch (Exception e) {
+                                    System.out.println("Favor de especificar un numero\n");
+                                }
+                                break;
+                            case 2:
+                                System.out.println("Cuanto dinero desea retirar?\n");
+                                try {
+                                    dinero=Integer.parseInt(System.console().readLine());
+                                    Usuarios[usuario].setRetiroSaldo(dinero);
+                                } catch (Exception e) {
+                                    System.out.println("Favor de especificar un numero\n");
+                                }
+                                break;
+                            case 3:
+                                System.out.println("Su saldo actual es de "+Usuarios[usuario].getSaldo());
+                                break;
+                            case 4:
+                                salir=true;
+                                break;
+                            default:
+                                System.out.println("Favor de ingresar una opcion correcta\n");
+                                break;
+                        }
+                    } catch (Exception e) {
+                        System.out.print("Ingrese un numero\n");
+                        salir=false;
                     }
-                } catch (Exception e) {
-                    System.out.print("Ingrese un numero");
-                    salir=false;
-                }
-            }while(salir==false);
-        }else{
-            System.out.println("Usuario o PIN incorrecto, favor de validar sus datos e intentarlo de nuevo");
+                }while(salir==false);
+            }else{
+                System.out.println("Usuario o PIN incorrecto, favor de validar sus datos e intentarlo de nuevo\n");
+            }
+        } catch (Exception e) {
+            System.out.print("Ese usuario no existe! Verifique sus datos\n");
         }
     }
 }
